@@ -12,6 +12,10 @@ int ListLength(struct ListNode *head) {
 	struct ListNode *current = head;
 	int count = 0;
 
+	if (current == NULL) {
+		printf("Empty \n");
+	}
+
 	while (current != NULL) {
 		printf("List Length %d\n", current->data);
 		count++;
@@ -80,6 +84,17 @@ void DeleteNodeFromLinkedList(struct ListNode **head, int position) {
 
 }
 
+void DeleteLinkedList(struct ListNode **head) {
+	struct ListNode *auxNode, *iterator;
+	iterator = *head;
+	while (iterator) {
+		auxNode = iterator->next;
+		free(iterator);
+		iterator = auxNode;
+	}
+	*head = NULL;
+};
+
 int main(int argc, char const* argv[]) {
 	// local variable for function
 	struct ListNode *head = NULL;
@@ -103,6 +118,8 @@ int main(int argc, char const* argv[]) {
 	InsertLinkedList(&head, 4, 3);
 	ListLength(head);
 	DeleteNodeFromLinkedList(&head, 3);
+	ListLength(head);
+	DeleteLinkedList(&head);
 	ListLength(head);
 
 	return 0;
