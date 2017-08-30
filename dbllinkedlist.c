@@ -79,6 +79,41 @@ void DLLInsert(struct DLLNode **head, int data, int position) {
 	return;
 }
 
+void DLLDelete(struct DLLNode **head, int position) {
+	struct DLLNode *temp, *temp2;
+	temp = *head;
+	int k = 1;
+
+	if (*head == NULL) {
+		printf("list is empty\n");
+		return;
+	}
+	if (position == 1) {
+		*head = (*head)->next;
+	}
+	if (*head != NULL) {
+		(*head)->prev = NULL;
+		free(temp);
+		return;
+	}
+
+	while ((k < position) && temp->next != NULL) {
+		temp = temp->next;
+		k++;
+	}
+	if (k != position - 1) {
+		printf("Desired position does not exist\n");
+	}
+
+	temp2 = temp->prev;
+	temp2->next = temp->next;
+	if (temp->next) { // Deletion from intermediate node
+		temp->next->prev = temp2;
+	}
+	free(temp);
+	return;
+}
+
 int main(int argc, char const* argv[])
 {
 	// create a node set to NULL, alloc memory, error check
@@ -115,6 +150,8 @@ int main(int argc, char const* argv[])
 
 	ListLength(head);
 	DLLInsert(&head, 3, 3);
+	ListLength(head);
+	DLLDelete(&head, 2);
 	ListLength(head);
 
 	return 0;
