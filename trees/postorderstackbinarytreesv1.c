@@ -23,6 +23,7 @@ struct Stack {
 };
 
 struct Stack *newStack(struct tNode *t) {
+	assert(t);
 	struct Stack *s = malloc(sizeof(struct Stack));
 	assert(s);
 	s->tnode = t;

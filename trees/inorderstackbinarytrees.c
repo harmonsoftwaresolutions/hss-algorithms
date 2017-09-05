@@ -25,6 +25,7 @@ struct tNode *newtNode(int data) {
 struct sNode *newsNode(struct tNode *t) {
 	assert(t);
 	struct sNode *s = malloc(sizeof(struct sNode));
+	assert(s);
 	s->tnode = t;
 	s->next = NULL;
 	return s;
