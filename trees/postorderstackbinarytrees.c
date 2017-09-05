@@ -41,14 +41,6 @@ struct tNode *Peek(struct sNode *s) {
 	return res;
 };
 
-void PrintStack(struct sNode *s) {
-	printf("Stack: ");
-	while (s) {
-		printf(" %d", s->tnode->data);
-		s = s->next;
-	}
-};
-
 void Push(struct sNode **top, struct tNode *t) {
 	struct sNode *s = newsNode(t);
 	s->tnode = t;
