@@ -9,7 +9,7 @@ struct tNode {
 };
 
 struct sNode {
-	struct tNode *t;
+	struct tNode *tnode;
 	struct sNode *next;
 };
 
@@ -25,13 +25,19 @@ struct tNode *newtNode(int data) {
 struct sNode *newsNode(struct tNode *t) {
 	assert(t);
 	struct sNode *s = malloc(sizeof(struct sNode));
-	s->t = t;
+	s->tnode = t;
 	s->next = NULL;
 	return s;
 }
 
 int IsEmpty(struct sNode *s) {
 	return !s;
+};
+
+struct tNode *Peek(struct sNode *s) {
+	assert(s);
+	struct tNode *res = s->tnode;
+	return res;
 };
 
 void Push(struct sNode **top, struct tNode *t) {
@@ -44,7 +50,7 @@ void Push(struct sNode **top, struct tNode *t) {
 struct tNode *Pop(struct sNode **top) {
 	assert(IsEmpty(*top) == 0);
 	struct sNode *temp = *top;
-	struct tNode *res = temp->t;
+	struct tNode *res = temp->tnode;
 	*top = temp->next;	
 	free(temp);
 	temp = NULL;
@@ -54,9 +60,9 @@ struct tNode *Pop(struct sNode **top) {
 void DeleteStack(struct sNode **list) {
 	struct sNode *top = *list;
 	while (top->next) {
-		struct tNode *tnode = top->t;
+		struct tNode *tnode = top->tnode;
 		struct sNode *temp = top->next;
-		top->t = temp->t;
+		top->tnode = temp->tnode;
 		top->next = temp->next;
 		free(tnode);
 		free(temp);
@@ -72,7 +78,7 @@ void DeleteStack(struct sNode **list) {
 void Inorder(struct tNode *root) {
 	if (root) {
 		Inorder(root->left);
-		printf("Data %d\n", root->data);
+		printf("%d ", root->data);
 		Inorder(root->right);
 	}
 };
@@ -90,7 +96,7 @@ void InorderNonRecursive(struct tNode *root, struct sNode **top) {
 			break;
 		}
 		node = Pop(&s);
-		printf("Data %d\n", node->data);
+		printf("%d ", node->data);
 		node = node->right;
 	}
 };
@@ -107,30 +113,33 @@ void PrintTree(struct tNode *root) {
 
 int main(int argc, char *argv[])
 {
-	struct sNode *s = NULL;
 	struct tNode *root = newtNode(1);
 	root->left = newtNode(2);
 	root->right = newtNode(3);
 	root->left->left = newtNode(4);
 	root->left->right = newtNode(5);
 
-	/* Push(&s, newtNode(6)); */
-	/* printf("\nPush Is Empty? %d\n", IsEmpty(s)); */
-	/* Pop(&s); */
-	/* DeleteStack(&s); */
-	/* printf("\nPop Is Empty? %d\n", IsEmpty(s)); */
+	struct sNode *s = NULL;
+	assert(IsEmpty(s) == 1);
+	Push(&s, root);
+	assert(IsEmpty(s) == 0);
+	Pop(&s);
+	assert(IsEmpty(s) == 1);
+	Push(&s, root);
+	DeleteStack(&s);
+	assert(IsEmpty(s) == 1);
+	assert(!s);
+
 	printf("\t\t *** BINARY TREE ***\n");
 	PrintTree(root);
 
-	printf("*** Recursive Traverse\n");
+	printf("*** Recursive Traverse (4 2 5 1 3)\n");
 	Inorder(root);
 	printf("\n");
 
-	/* printf("\nIs Empty? %d\n", IsEmpty(s)); */
-
-	printf("*** Traverse without recursion\n");
+	printf("*** Traverse without recursion (4 2 5 1 3)\n");
 	InorderNonRecursive(root, &s);
+	printf("\n");
 
-	/* printf("\nStill Empty Stack? %d\n", IsEmpty(s)); */
 	return 0;
 };
