@@ -52,12 +52,12 @@ void EnQueue(struct Queue *q, struct Node *node) {
 	assert(q);
 	assert(node);
 	// create a new list
-	struct List *l = newList(node);
+	struct List *list = newList(node);
 	// attach new list to Queue
 	if (!q->front) {
-		q->front = l;
+		q->front = list;
 	} else {
-		q->rear = l;
+		q->rear = list;
 	}
 };
 
@@ -84,6 +84,25 @@ void PrintTree(struct Node *root) {
 	return;
 };
 
+void PrintQueue(struct Queue *Q) {
+	int cnt = 0;
+	struct List *temp = Q->front;
+	while (temp) {
+		printf("cnt %d, Q fr %p, d %d ", cnt, temp, temp->node->data);
+		if (Q->rear) {
+			printf("Q rr %p, d %d\n", Q->rear, Q->rear->node->data);
+		} else {
+			printf("rr null\n");
+		}
+		printf("nxt %p\n", temp->next);
+		temp = temp->next;
+		cnt++;
+		printf("cnt %d\n", cnt);
+	}
+	free(temp);
+	temp = NULL;
+};
+
 int main(int argc, char *argv[])
 {
 	struct Node *root = newNode(1);
@@ -93,23 +112,32 @@ int main(int argc, char *argv[])
 	root->left->right = newNode(5);
 
 	struct Queue *q = newQueue();
-	printf("IsEmpty %d\n", IsEmpty(q));
+	EnQueue(q, root);
+	PrintQueue(q); // BUG: acting like a stack not a queue
+
 	EnQueue(q, root->left);
-	printf("1EQ fr %p, rr %p, node %p, data %d\n", q->front, q->rear, q->front->node, q->front->node->data);
-	printf("EQ IsEmpty %d\n", IsEmpty(q));
-	EnQueue(q, root->right);
-	printf("2EQ fr %p, rr %p, node %p, data %d\n", q->front, q->rear, q->front->node, q->front->node->data);
-	DeQueue(q);
-	printf("1DEQ fr %p, rr %p, node %p, data %d\n", q->front, q->rear, q->front->node, q->front->node->data);
-	DeQueue(q);
-	printf("DEQ IsEmpty %d\n", IsEmpty(q));
+	PrintQueue(q);
+	/* printf("1EQ fr %p, rr %p, node %p, data %d\n", q->front, q->rear, q->front->node, q->front->node->data); */
+
+	/* EnQueue(q, root->right); */
+	/* PrintQueue(q); */
+
+	/* EnQueue(q, root->left->left); */
+	/* PrintQueue(q); */
+	/* EnQueue(q, root->left->right); */
+	/* PrintQueue(q); */
+
+	/* DeQueue(q); */
+	/* printf("1DEQ fr %p, rr %p, node %p, data %d\n", q->front, q->rear, q->front->node, q->front->node->data); */
+	/* DeQueue(q); */
 	
-	printf("\t\t *** BINARY TREE ***\n");
+
+	/* printf("\t\t *** BINARY TREE ***\n"); */
 	/* PrintTree(root); */
 
-	printf("*** Recursive Traverse (1 2 3 4 5)\n");
+	/* printf("*** Recursive Traverse (1 2 3 4 5)\n"); */
 	/* PrintLevelOrder(root); */
-	printf("\n");
+	/* printf("\n"); */
 
 	return 0;
 }
