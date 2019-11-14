@@ -1,2 +1,2 @@
 # hss-algorithms
-algorithms study. See language specific branches for code
+algorithms study. See language specific folders for code
